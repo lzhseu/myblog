@@ -1,0 +1,97 @@
+.blogger-main {
+    background: #fff;
+    padding: 20px 30px;
+    -webkit-box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.5);
+    height: 100%;
+}
+
+.blogger-main > * {
+    color: #454545;
+}
+
+.blogger-main a {
+    font-family: 'DejaVu Sans', Arial, Helvetica, sans-serif;
+    color: #454545;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.tab-content {
+    padding-top: 20px;
+}
+
+.confirm-profile-btn {
+    text-align: right;
+}
+
+a {
+    text-decoration: none!important;
+}
+
+
+.right-bar .create-blog-btn {
+    line-height: 1;
+    border: 3px solid #eee;
+    padding: 10px 20px;
+    font-size: 15px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.other-func {
+    text-align: center;
+    padding-top: 20px;
+}
+
+.other-func .create-blog-btn {
+    color: #eee;
+}
+
+.table-item .delete .delete-blog-btn {
+    color: red;
+}
+
+.table-item .save-state,
+.table-item .private-state,
+.table-item .public-state,
+.table-item .internal-state,
+.table-item .unknown-state,
+.table-item .status{
+    font-size: 14px;
+}
+
+.table-item .title {
+    color: #454545;
+    font-size: 15px;
+}
+
+.table-item .save-state {
+    color: #ffd33a;
+}
+
+.table-item .internal-state {
+    color: #28daff;
+}
+
+.table-item .private-state {
+    color: orangered;
+}
+
+.table-item .public-state {
+    color: limegreen;
+}
+
+.table-item .unknown-state {
+    color: red;
+}
+
+.table-item .status {
+    color: #888;
+}
+
+#category-edit-modal > *,
+#category-create-modal > * {
+    color: #454545;
+}
+

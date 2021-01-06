@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 引入 properties 文件 properties文件要在一个地方统一引入，context:property-placeholder 只能定义一次 -->
+    <context:property-placeholder location="classpath:config/config.properties"/>
+
+
+     <!-- 博主的配置 -->
+    <bean id="bloggerProperties" class="top.lzhseu.myblog.manager.properties.BloggerProperties">
+        <property name="email" value="${blogger.email}" />
+    </bean>
+
+    <!-- 博文的配置 -->
+    <bean id="blogProperties" class="top.lzhseu.myblog.manager.properties.BlogProperties">
+        <property name="homePageSize" value="${blog.home.pageSize}" />
+        <property name="categoryPageSize" value="${blog.category.pageSize}" />
+        <property name="blogImageLocation" value="${blog.image.location}" />
+        <property name="blogImageRootUrl" value="${blog.image.rootUrl}" />
+    </bean>
+
+
+    <!--管理者-->
+    <context:component-scan base-package="top.lzhseu.myblog.manager"/>
+
+
+</beans>

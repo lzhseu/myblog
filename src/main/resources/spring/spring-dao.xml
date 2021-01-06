@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       ">
+
+    <!-- 使用 PropertyOverrideConfigurer 处理器加载数据源参数，
+         即把 db.properties 中的参数自动填入数据源 -->
+    <context:property-override location="classpath:config/db.properties"/>
+
+    <!-- 配置 Druid 数据源 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"/>
+
+    <!--  配置 Mybatis 的 sqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+          p:dataSource-ref="dataSource">
+        <!--mybatis 全局配置文件-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!--别名所对应的实体类-->
+        <property name="typeAliasesPackage" value="top.lzhseu.myblog.entity"/>
+        <!--sql 与 dao 的映射文件-->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+    </bean>
+
+    <!--  扫描该包下所有接口当作 spring 的 bean 配置，才能使用依赖注入  -->
+    <!--  自动扫描 将Mapper接口生成代理注入到Spring  -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+          p:basePackage="top.lzhseu.myblog.dao"
+          p:sqlSessionFactoryBeanName="sqlSessionFactory" />
+
+</beans>

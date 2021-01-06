@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lzhseu.myblog.dao.blog.BlogImageDao">
+
+    <insert id="insert" parameterType="blogImage" useGeneratedKeys="true">
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO blog_image(
+        title,
+        `desc`,
+        url) VALUES (
+        #{title},
+        #{desc},
+        #{url})
+    </insert>
+
+    <update id="update">
+        UPDATE blog_image
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="desc != null">`desc` = #{desc},</if>
+            <if test="url != null">url = #{url}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="getImageByTitle" resultType="blogImage">
+        SELECT * FROM blog_image
+        WHERE title = #{title}
+    </select>
+
+    <select id="getImageById" resultType="blogImage">
+        SELECT * FROM blog_image
+        WHERE id = #{id}
+    </select>
+</mapper>

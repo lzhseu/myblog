@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 如果使用基于注解的 aop，需要开启 aop 操作 -->
+    <!-- <aop:aspectj-autoproxy/> -->
+
+    <!--  把 handler 放在这里 -->
+    <context:component-scan base-package="top.lzhseu.myblog.handler"/>
+
+    <!-- 配置事务增强 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <!-- 定义事务传播属性 -->
+        <!--tx:method也规定了如果方法名匹配“add*”和“get*”...方法时使用事务，propagation是设定事务的传播级别。-->
+        <tx:attributes>
+            <!--propagation 传播行为
+            REQUIRED 如果当前没有事务，就创建一个新事务，如果当前存在事务，就加入该事务-->
+            <tx:method name="insert*" propagation="REQUIRED" isolation="DEFAULT" read-only="false"/>
+            <tx:method name="update*" propagation="REQUIRED" isolation="DEFAULT" read-only="false"/>
+            <tx:method name="delete*" propagation="REQUIRED" isolation="DEFAULT" read-only="false"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--配置事务切面-->
+    <aop:config>
+        <!-- 切入点 - 只对业务层启用事务 - impl包和所有子包中任意类的任意方法 -->
+        <aop:pointcut id="pointCut" expression="execution(* top.lzhseu.myblog.service.impl..*.*(..))"/>
+        <!-- 切面 -->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pointCut"/>
+    </aop:config>
+
+</beans>

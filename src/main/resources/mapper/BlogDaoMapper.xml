@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lzhseu.myblog.dao.blog.BlogDao">
+
+    <insert id="insert" parameterType="blog" useGeneratedKeys="true">
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO blog(
+        blogger_id,
+        category_id,
+        state,
+        title,
+        content,
+        content_md,
+        intro,
+        `date`,
+        modify_date,
+        word_count) VALUES (
+        #{bloggerId},
+        #{categoryId},
+        #{state},
+        #{title},
+        #{content},
+        #{contentMd},
+        #{intro},
+        #{date},
+        #{modifyDate},
+        #{wordCount})
+    </insert>
+
+    <update id="update" parameterType="blog">
+        UPDATE blog
+        <set>
+            <if test="bloggerId != null">blogger_id = #{bloggerId},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="contentMd != null">content_md = #{contentMd},</if>
+            <if test="intro != null">intro = #{intro},</if>
+            <if test="date != null">`date` = #{date},</if>
+            <if test="modifyDate != null">modify_date = #{modifyDate},</if>
+            <if test="wordCount != null">word_count = #{wordCount}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByCategoryId">
+        DELETE FROM blog
+        WHERE category_id = #{categoryId}
+    </delete>
+
+    <delete id="delete">
+        DELETE FROM blog
+        WHERE id = #{id}
+    </delete>
+
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM blog
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="categoryId != null">
+                AND category_id = #{categoryId}
+            </if>
+            <if test="state != null">
+                AND state = #{state}
+            </if>
+        </where>
+    </select>
+
+    <select id="getBlogListItemsByPage" resultType="blog">
+        <bind name="offset" value="(pageIndex-1)*pageSize"/>
+        SELECT
+        id,
+        blogger_id,
+        category_id,
+        title,
+        intro,
+        state,
+        `date`,
+        modify_date,
+        word_count
+        FROM blog
+        <where>
+            <if test="categoryId != null">
+                category_id = #{categoryId}
+            </if>
+            <if test="bloggerId != null">
+                AND blogger_id = #{bloggerId}
+            </if>
+            <if test="state != null">
+                AND state = #{state}
+            </if>
+        </where>
+        ORDER BY `date` DESC, id DESC
+        <if test="offset >= 0 and pageSize > 0">
+            LIMIT #{offset}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="getBlogById" resultType="blog">
+        SELECT * FROM blog
+        WHERE id = #{id}
+    </select>
+
+    <select id="getBlogState" resultType="java.lang.Integer">
+        SELECT state FROM blog
+        WHERE id = #{id}
+    </select>
+
+</mapper>

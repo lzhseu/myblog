@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lzhseu.myblog.dao.blog.BlogCategoryDao">
+
+    <insert id="insert" parameterType="blogCategory" useGeneratedKeys="true">
+        <selectKey resultType="int" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO blog_category(
+        title,
+        `desc`,
+        blogger_id) VALUES (
+        #{title},
+        #{desc},
+        #{bloggerId})
+    </insert>
+
+    <update id="update">
+        UPDATE blog_category
+        <set>
+            <if test="bloggerId != null">blogger_id = #{bloggerId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="desc != null">`desc` = #{desc}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM blog_category
+        WHERE id = #{id}
+    </delete>
+
+
+    <select id="getAllBlogCategory" resultType="blogCategory">
+        SELECT * FROM blog_category;
+    </select>
+
+    <select id="getBlogCategoryById" resultType="blogCategory">
+        SELECT * FROM blog_category
+        WHERE id = #{id}
+    </select>
+
+    <select id="getBlogCategoryByBloggerId" resultType="blogCategory">
+        SELECT * FROM blog_category
+        WHERE blogger_id = #{bloggerId}
+    </select>
+
+    <select id="getBlogCategoryByTitle" resultType="blogCategory">
+        SELECT * FROM blog_category
+        WHERE title = #{title}
+    </select>
+</mapper>
